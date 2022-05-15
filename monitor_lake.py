@@ -4,17 +4,18 @@ from pathlib import Path
 from datetime import datetime
 from time import sleep
 import json
+from tqdm import tqdm
 
-with open('api_key.txt', 'r') as f:
-    api_key = f.read()
+with open('private.txt', 'r') as f:
+    api_key, rtsp_url, data_path = (x.strip() for x in f.readlines())
 
 
 def capture(
-        data_path=Path('data'),
+        data_path=Path(data_path),
         api_key=api_key,
-        lat=48.134143, lon=-122.3029389
+        lat=48.134143, lon=-122.3029389,
 ):
-    client = rtsp.Client(rtsp_server_uri='rtsp://grant:pswd4wyse@192.168.86.29/live', verbose=False)
+    client = rtsp.Client(rtsp_server_uri=rtsp_url, verbose=False)
     img = None
     while img is None:
         img = client.read()
@@ -28,6 +29,6 @@ def capture(
 
 
 if __name__ == '__main__':
-    for i in range(10):
+    for i in tqdm(range(10)):
         capture()
         sleep(3)
