@@ -16,6 +16,7 @@ def capture(
         data_path=Path(data_path),
         api_key=api_key,
         lat=48.134143, lon=-122.3029389,
+        resolution=(640, 360)
 ):
     if not data_path.is_dir():
         data_path.mkdir()
@@ -27,7 +28,7 @@ def capture(
     r = requests.get(f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}')
 
     datetime_str = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-    img.save(data_path / (datetime_str + '.png'))
+    img.resize(resolution).save(data_path / (datetime_str + '.png'))
     with open(data_path / (datetime_str + '.json'), 'w') as f:
         json.dump(r.text, f)
     print('Captured', datetime_str)
