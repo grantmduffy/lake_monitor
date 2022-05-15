@@ -15,6 +15,8 @@ def capture(
         api_key=api_key,
         lat=48.134143, lon=-122.3029389,
 ):
+    if not data_path.is_dir():
+        data_path.mkdir()
     client = rtsp.Client(rtsp_server_uri=rtsp_url, verbose=False)
     img = None
     while img is None:
